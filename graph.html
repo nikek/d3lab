@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Labbing with D3 and moduling">
+  <meta name="author" content="Niklas Ek">
+
+  <title>D3 Graphing</title>
+  <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+  <div id="monastery">
+    <h1>En graph!</h1>
+    <button id="addData">Add Data</button>
+    <div id="graphs"></div>
+  </div>
+
+  <!--<script src="http://d3js.org/d3.v3.min.js"></script>-->
+  <script src="d3.v3.min.js"></script>
+  <script src="wisdom/Graphest.js"></script>
+  <script>
+
+  /*
+
+    Graphest
+
+  */
+
+
+
+
+  var bla = (function(){
+    var i = -1;
+    return function(){
+      i += 1;
+      return i;
+      //return new Date().getTime() + i;
+    };
+  })();
+
+  var graphData = [
+    {x:bla(), y:10},
+    {x:bla(), y:54},
+    {x:bla(), y:23},
+    {x:bla(), y:84},
+    {x:bla(), y:95},
+    {x:bla(), y:55},
+    {x:bla(), y:31},
+    {x:bla(), y:5},
+    {x:bla(), y:0},
+    {x:bla(), y:4},
+    {x:bla(), y:10},
+  ]
+
+
+  var graph = new Wisdom.Graphest({
+    data: graphData,
+    wrapper: "#graphs"
+  });
+
+
+  var addData = document.querySelector('#addData');
+
+  addData.addEventListener('click', function(){
+    graph.addValue({x:bla(), y:Math.round(Math.random()*100)})
+  });
+
+  </script>
+</body>
+</html>

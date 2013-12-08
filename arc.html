@@ -1,0 +1,142 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="author" content="Niklas Ek">
+
+	<title>Arc</title>
+
+	<style>
+
+	body {
+		margin: 0;
+	}
+
+	svg {
+		width:100%;
+		height:100%;
+	}
+
+	</style>
+
+</head>
+<body>
+	
+	<div id="arc"></div>
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+	<script>
+	var obj = {
+		config: {
+		shadowOpacity: 0.2,
+		shadowSize: 8,
+		shadowVerticalOffset: 1
+	}};
+
+	generateShadow = function(svg, defs) {
+
+		var gaussFilter, feOffset, feGaussianBlur, feComposite1, feFlood, feComposite2, feComposite3;
+
+		// FILTER
+		gaussFilter = document.createElementNS(svg,"filter");
+		gaussFilter.setAttribute("id","inner-shadow");
+		defs.appendChild(gaussFilter);
+
+		// offset
+		feOffset = document.createElementNS(svg,"feOffset");
+		feOffset.setAttribute("dx", 0);
+		feOffset.setAttribute("dy", obj.config.shadowVerticalOffset);
+		gaussFilter.appendChild(feOffset);
+
+		// blur
+		feGaussianBlur = document.createElementNS(svg,"feGaussianBlur");
+		feGaussianBlur.setAttribute("result","offset-blur");
+		feGaussianBlur.setAttribute("stdDeviation", obj.config.shadowSize);
+		gaussFilter.appendChild(feGaussianBlur);
+
+		// composite 1
+		feComposite1 = document.createElementNS(svg,"feComposite");
+		feComposite1.setAttribute("operator","out");
+		feComposite1.setAttribute("in", "SourceGraphic");
+		feComposite1.setAttribute("in2","offset-blur");
+		feComposite1.setAttribute("result","inverse");
+		gaussFilter.appendChild(feComposite1);
+
+		// flood
+		feFlood = document.createElementNS(svg,"feFlood");
+		feFlood.setAttribute("flood-color","black");
+		feFlood.setAttribute("flood-opacity", obj.config.shadowOpacity);
+		feFlood.setAttribute("result","color");
+		gaussFilter.appendChild(feFlood);
+
+		// composite 2
+		feComposite2 = document.createElementNS(svg,"feComposite");
+		feComposite2.setAttribute("operator","in");
+		feComposite2.setAttribute("in", "color");
+		feComposite2.setAttribute("in2","inverse");
+		feComposite2.setAttribute("result","shadow");
+		gaussFilter.appendChild(feComposite2);
+
+		// composite 3
+		feComposite3 = document.createElementNS(svg,"feComposite");
+		feComposite3.setAttribute("operator","over");
+		feComposite3.setAttribute("in", "shadow");
+		feComposite3.setAttribute("in2","SourceGraphic");
+		gaussFilter.appendChild(feComposite3);
+
+		// var clear
+		gaussFilter, feOffset, feGaussianBlur, feComposite1, feFlood, feComposite2, feComposite3 = null;
+
+	};
+
+	
+
+	var w = 800;
+	var h = 400;
+	var pi = Math.PI;
+
+	// SVG element
+	var svg = d3.select("#arc")
+		.append("svg")
+		.attr("viewBox", "0 0 "+w+" "+h)
+		.attr("style", "background: #f0f0f0;");
+
+	var defs = svg.append('defs');
+	generateShadow("http://www.w3.org/2000/svg", defs[0][0]);
+	
+	// Arc - function( Object )
+	// {
+	//		value: 33	// metric
+	//		max: 100	// max value
+	// }
+	var arc = d3.svg.arc()
+		.innerRadius(120)
+		.outerRadius(140)
+		.startAngle(-0.5*pi)
+		.endAngle(function(d) { return (d.value / d.max) * pi - 0.5 * pi; });
+
+	var arcBg = d3.svg.arc()
+		.innerRadius(120)
+		.outerRadius(140)
+		.startAngle(-0.5*pi)
+		.endAngle(0.5*pi);
+
+	// Black background arc
+	svg.append("path")
+	.attr("d", arcBg())
+	.attr("transform", "translate(200,200)")
+	.attr("style", "fill:#ddd")
+	.attr("filter", "url(#inner-shadow)");
+
+	// Arc displaying metric
+	svg.append("path")
+	.attr("d", arc({value: 43, max:100}))
+	.attr("transform", "translate(200,200)")
+	.attr("style", "fill:cyan")
+	.attr("filter", "url(#inner-shadow)");
+	
+	
+	
+	</script>
+</body>
+</html>
