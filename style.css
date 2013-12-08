@@ -56,3 +56,37 @@ body { margin: 0; }
   	margin: 2% 1% 0 0;
   }
 }
+
+
+
+.line {
+  fill: none;
+  stroke-width:1px;
+}
+.area {
+  opacity: 0.6;
+}
+
+/*
+$navy: #113F8C;
+$blue: #00A1CB;
+$teal: #01A4A4;
+$green: #61AE24;
+$forest: #32742C;
+$yellow: #D0D102;
+$orange: #F18D05;
+$red: #E54028;
+$pink: #D70060;
+$purple: #A784B4;*/
+
+/* color classes */
+
+.line.white { stroke: #fafafa; }
+.area.white { fill: #fafafa; }
+
+.line.red { stroke: #E54028; }
+.area.red { fill: #E54028; }
+
+.line.forest { stroke: #32742C; }
+.area.forest { fill: #32742C; }
+

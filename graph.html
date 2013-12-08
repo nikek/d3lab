@@ -57,7 +57,16 @@
 
   var graph = new Wisdom.Graphest({
     data: graphData,
-    wrapper: "#graphs"
+    wrapper: "#graphs",
+    useArea: true,
+    colorClass: "forest"
+  });
+
+  var graph2 = new Wisdom.Graphest({
+    data: graphData,
+    wrapper: "#graphs",
+    useArea: true,
+    colorClass: "red"
   });
 
 
