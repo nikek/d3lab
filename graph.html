@@ -13,7 +13,7 @@
 <body>
   <div id="monastery">
     <h1>En graph!</h1>
-    <button id="addData">Add Data</button>
+    <button id="toggleStacked">Toggle Stacked</button>
     <div id="graphs"></div>
   </div>
 
@@ -40,40 +40,53 @@
     };
   })();
 
-  var graphData = [
-    {x:bla(), y:10},
-    {x:bla(), y:54},
-    {x:bla(), y:23},
-    {x:bla(), y:84},
-    {x:bla(), y:95},
-    {x:bla(), y:55},
-    {x:bla(), y:31},
-    {x:bla(), y:5},
-    {x:bla(), y:0},
-    {x:bla(), y:4},
-    {x:bla(), y:10},
-  ]
+  
+
+  var genData = function(series, points){
+    if(!series) var series = 1;
+    if(!points) var points = 10;
+
+    var dataset = [];
+    var newX, newY, i, j;
+
+    for(i=0; i<points; i++){
+      newX = bla();
+      for(j=0; j<series; j++){
+        oldY = 0;
+        if(!dataset[j]) dataset.push([]);
+        if(dataset[j][i-1]) oldY = dataset[j][i-1].y;
+
+
+        newY = oldY + Math.round(Math.random()*20)-10;
+        newY = newY > 100 ? 100 : newY;
+        newY = newY < 0 ? 0 : newY;
+
+        dataset[j][i] = {x: newX, y:  newY};
+
+      }
+    }
+
+    return dataset;
+  }
+
+  var graphData = genData(100, 100);
+
 
 
   var graph = new Wisdom.Graphest({
     data: graphData,
     wrapper: "#graphs",
-    useArea: true,
-    colorClass: "forest"
-  });
-
-  var graph2 = new Wisdom.Graphest({
-    data: graphData,
-    wrapper: "#graphs",
-    useArea: true,
-    colorClass: "red"
+    area: true,
+    stacked: true,
+    colorClass: ["forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue"]
   });
 
 
-  var addData = document.querySelector('#addData');
 
-  addData.addEventListener('click', function(){
-    graph.addValue({x:bla(), y:Math.round(Math.random()*100)})
+  var toggleStacked = document.querySelector('#toggleStacked');
+
+  toggleStacked.addEventListener('click', function(){
+    graph.toggleStacked();
   });
 
   </script>
