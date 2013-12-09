@@ -61,10 +61,10 @@ body { margin: 0; }
 
 .line {
   fill: none;
-  stroke-width:1px;
+  stroke-width:2px;
 }
 .area {
-  opacity: 0.6;
+  opacity: 0.7;
 }
 
 /*
@@ -84,12 +84,24 @@ $purple: #A784B4;*/
 .line.white { stroke: #fafafa; }
 .area.white { fill: #fafafa; }
 
-.line.red { stroke: #E54028; }
-.area.red { fill: #E54028; }
-
-.line.forest { stroke: #32742C; }
-.area.forest { fill: #32742C; }
-
+.line.navy { stroke: #113F8C; }
+.area.navy { fill: #113F8C; }
 .line.blue { stroke: #00A1CB; }
 .area.blue { fill: #00A1CB; }
+.line.teal { stroke: #01B4A4; }
+.area.teal { fill: #01B4A4; }
+.line.green { stroke: #61AE24; }
+.area.green { fill: #61AE24; }
+.line.forest { stroke: #32742C; }
+.area.forest { fill: #32742C; }
+.line.yellow { stroke: #D0D102; }
+.area.yellow { fill: #D0D102; }
+.line.orange { stroke: #F18D05; }
+.area.orange { fill: #F18D05; }
+.line.red { stroke: #E54028; }
+.area.red { fill: #E54028; }
+.line.pink { stroke: #D70060; }
+.area.pink { fill: #D70060; }
+.line.purple { stroke: #A784B4; }
+.area.purple { fill: #A784B4; }
 

@@ -15,6 +15,9 @@
     <h1>En graph!</h1>
     <button id="toggleStacked">Toggle Stacked</button>
     <div id="graphs"></div>
+    <div id="graphs2"></div>
+    <div id="graphs3"></div>
+    <div id="graphs4"></div>
   </div>
 
   <!--<script src="http://d3js.org/d3.v3.min.js"></script>-->
@@ -31,28 +34,19 @@
 
 
 
-  var bla = (function(){
-    var i = -1;
-    return function(){
-      i += 1;
-      return i;
-      //return new Date().getTime() + i;
-    };
-  })();
-
-  
 
   var genData = function(series, points){
     if(!series) var series = 1;
     if(!points) var points = 10;
 
     var dataset = [];
-    var newX, newY, i, j;
+    var newX = 0;
+    var newY, i, j;
 
     for(i=0; i<points; i++){
-      newX = bla();
+      newX += 1;
       for(j=0; j<series; j++){
-        oldY = 0;
+        oldY = Math.round(Math.random()*10);
         if(!dataset[j]) dataset.push([]);
         if(dataset[j][i-1]) oldY = dataset[j][i-1].y;
 
@@ -69,24 +63,52 @@
     return dataset;
   }
 
-  var graphData = genData(100, 100);
+  var graphData = genData(8, 50);
+  var graphData2 = genData(4, 10);
+  var graphData3 = genData(6, 100);
+  var graphData4 = genData(3, 100);
 
-
+  colors = ["navy", "blue", "teal", "green", "forest", "yellow", "orange", "red", "pink", "purple","navy", "blue", "teal", "green", "forest", "yellow", "orange", "red", "pink", "purple","navy", "blue", "teal", "green", "forest", "yellow", "orange", "red", "pink", "purple"];
 
   var graph = new Wisdom.Graphest({
     data: graphData,
     wrapper: "#graphs",
     area: true,
     stacked: true,
-    colorClass: ["forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue","forest", "red", "blue"]
+    colorClass: colors
   });
 
+  var graph2 = new Wisdom.Graphest({
+    data: graphData2,
+    wrapper: "#graphs2",
+    area: true,
+    stacked: true,
+    colorClass: colors
+  });
 
+  var graph3 = new Wisdom.Graphest({
+    data: graphData3,
+    wrapper: "#graphs3",
+    area: false,
+    stacked: true,
+    colorClass: colors
+  });
+
+    var graph4 = new Wisdom.Graphest({
+    data: graphData4,
+    wrapper: "#graphs4",
+    area: true,
+    stacked: true,
+    colorClass: ["red", "yellow", "pink"]
+  });
 
   var toggleStacked = document.querySelector('#toggleStacked');
 
   toggleStacked.addEventListener('click', function(){
     graph.toggleStacked();
+    graph2.toggleStacked();
+    graph3.toggleStacked();
+    graph4.toggleStacked();
   });
 
   </script>
