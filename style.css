@@ -1,5 +1,5 @@
 
-body { margin: 0; }
+body { margin: 0;  }
 
 #monastery {
 	width:98%;
@@ -49,6 +49,11 @@ body { margin: 0; }
 }
 
 
+.line {
+  fill: none;
+  stroke-width:2;
+}
+
 @media (min-width: 699px){
   .widget {
   	float:left;
@@ -59,10 +64,7 @@ body { margin: 0; }
 
 
 
-.line {
-  fill: none;
-  stroke-width:2px;
-}
+
 .area {
   opacity: 0.7;
 }
@@ -83,7 +85,6 @@ $purple: #A784B4;*/
 
 .line.white { stroke: #fafafa; }
 .area.white { fill: #fafafa; }
-
 .line.navy { stroke: #113F8C; }
 .area.navy { fill: #113F8C; }
 .line.blue { stroke: #00A1CB; }

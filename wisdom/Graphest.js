@@ -8,7 +8,8 @@ Wisdom.Graphest = (function(undefined){
     // Setup stage
     this.w = 900;
     this.h = 600;
-    this.inputData = input.data;
+    console.log(clone(input.data));
+    this.inputSeries = input.data;
     this.useArea = input.area || false;
     this.colorClass = input.colorClass || [];
     this.interpolator = input.interpolator || "cardinal";
@@ -24,7 +25,7 @@ Wisdom.Graphest = (function(undefined){
       .attr("viewBox", "0 0 "+this.w+" "+this.h);
 
 
-    this.setupLayouts();    
+    this.setupLayouts();
     this.setupDataset();
     this.setupScales();
     this.setupRenderers();
@@ -36,20 +37,23 @@ Wisdom.Graphest = (function(undefined){
     this.stack = d3.layout.stack()
       .offset("zero")
       .values(function(d){ return d; });
-  }
+  };
   
   Graphest.prototype.setupDataset = function(){
-    this.dataset = clone(this.inputData);
+    this.seriesDataset = clone(this.inputSeries);
+    this.seriesDataset = this.seriesDataset.map(function(series){
+      return series.dataPoints;
+    });
 
     if(!this.stacked){
-      this.dataset.forEach(function(series){
+      this.seriesDataset.forEach(function(series){
         series.forEach(function(point){
           point.y0 = 0;
         });
       });
     }
     else{
-      this.dataset = this.stack(this.dataset);
+      this.seriesDataset = this.stack(this.seriesDataset);
     }
   };
 
@@ -70,8 +74,12 @@ Wisdom.Graphest = (function(undefined){
   };
 
   Graphest.prototype.render = function(){
-    this.draw("line");
-    if(this.useArea) this.draw("area");
+    var that = this;
+    this.inputSeries.forEach(function(series, i){
+      that.draw(i, "line");
+      console.log(series);
+      if(series.renderer !== "line") that.draw(i, "area");
+    });
   };
 
   Graphest.prototype.update = function(){
@@ -82,30 +90,30 @@ Wisdom.Graphest = (function(undefined){
 
   // DATA HANDLING
   Graphest.prototype.addValue = function(index, value){
-    this.dataset[index].push(value);
+    this.seriesDataset[index].push(value);
     this.render();
   };
 
 
   // GRAPH CONTROLS
   Graphest.prototype.setupScales = function(){
-    this.xMin = d3.min(this.dataset, function(d){ return d[0].x; });
-    this.xMax = d3.min(this.dataset, function(d){ return d.length; });
-    this.yMax = d3.max(this.dataset, function(d){ return d3.max(d, function(d){ return d.y+d.y0; }); });
+    this.xMin = d3.min(this.seriesDataset, function(d){ return d[0].x; });
+    this.xMax = d3.max(this.seriesDataset, function(d){ return d[d.length-1].x; });
+    this.yMin = this.stacked ? 0 : d3.min(this.seriesDataset, function(d){ return d3.min(d, function(d){ return d.y+d.y0; });});
+    this.yMax = d3.max(this.seriesDataset, function(d){ return d3.max(d, function(d){ return d.y+d.y0; }); });
 
     this.x = d3.scale.linear().domain([this.xMin, this.xMax]).range([0, this.w]);
-    this.y = d3.scale.linear().domain([0, this.yMax]).range([this.h, 3]); // last num here yields a small space for cardinal overflow
+    this.y = d3.scale.linear().domain([this.yMin, this.yMax]).range([this.h, 3]); // last num here yields a small space for cardinal overflow
   };
 
 
   // GENERATOR
-  Graphest.prototype.draw = function(type){
-    var that = this;
-    var path = this.svg.selectAll('.'+type).data(this.dataset);
+  Graphest.prototype.draw = function(index, type){
+    var path = this.svg.selectAll('#'+type+index).data([this.seriesDataset[index]]);
 
     path.enter().append('path')
-      .attr('id', function(d, i) { return type+i; })
-      .attr('class', function(d, i) { return type + ' ' + that.colorClass[i]; });
+      .attr('id', type+index)
+      .attr('class', type + ' ' + this.colorClass[index]);
     
     path
       .transition()
