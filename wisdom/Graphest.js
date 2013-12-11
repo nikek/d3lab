@@ -8,9 +8,7 @@ Wisdom.Graphest = (function(undefined){
     // Setup stage
     this.w = 900;
     this.h = 600;
-    console.log(clone(input.data));
     this.inputSeries = input.data;
-    this.useArea = input.area || false;
     this.colorClass = input.colorClass || [];
     this.interpolator = input.interpolator || "cardinal";
     this.tension = input.tension || 0.96;
@@ -74,12 +72,10 @@ Wisdom.Graphest = (function(undefined){
   };
 
   Graphest.prototype.render = function(){
-    var that = this;
     this.inputSeries.forEach(function(series, i){
-      that.draw(i, "line");
-      console.log(series);
-      if(series.renderer !== "line") that.draw(i, "area");
-    });
+      this.draw(i, "line");
+      if(series.renderer !== "line") this.draw(i, "area");
+    }.bind(this));
   };
 
   Graphest.prototype.update = function(){
